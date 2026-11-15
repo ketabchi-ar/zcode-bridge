@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.zcode-bridge</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/opt/homebrew/bin/node</string>
+    <string>BRIDGE_HOME_REPLACE/bridge.mjs</string>
+  </array>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>KeepAlive</key>
+  <true/>
+  <key>WorkingDirectory</key>
+  <string>BRIDGE_HOME_REPLACE</string>
+  <key>StandardOutPath</key>
+  <string>BRIDGE_HOME_REPLACE/bridge.log</string>
+  <key>StandardErrorPath</key>
+  <string>BRIDGE_HOME_REPLACE/bridge.err.log</string>
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>PATH</key>
+    <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+    <key>ZCODE_APP_VERSION</key>
+    <string>3.18.2</string>
+    <key>ZCODE_BUILD_COMMIT_ID</key>
+    <string>2681f4af</string>
+    <key>ZCODE_ENV</key>
+    <string>production</string>
+    <key>ZCODE_RUNTIME_ENV</key>
+    <string>production</string>
+    <key>ZCODE_CLIENT_LANGUAGE</key>
+    <string>en-US</string>
+    <key>ZCODE_BASE_URL</key>
+    <string>https://zcode.z.ai</string>
+    <key>ZAI_BUSINESS_BASE_URL</key>
+    <string>https://api.z.ai</string>
+    <key>ZAI_OAUTH_CLIENT_ID</key>
+    <string>client_P8X5CMWmlaRO9gyO-KSqtg</string>
+    <key>ZAI_OAUTH_ORIGIN</key>
+    <string>https://chat.z.ai</string>
+  </dict>
+</dict>
+</plist>

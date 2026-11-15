@@ -1,0 +1,18 @@
+# secrets & per-account state — NEVER commit
+accounts/
+*.log
+*.err.log
+
+# captured traffic / certs (contain tokens & keys)
+cli-request-capture.txt
+cli-request-headers.json
+mitm/
+capture-relay.mjs
+mitm-capture.mjs
+
+# large local artifacts
+zcode-cli-dist/
+venv/
+zcode-system.json
+legacy/
+.DS_Store

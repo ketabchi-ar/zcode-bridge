@@ -1,0 +1,42 @@
+diff --git a/apps/zcode-cli/packages/bootstrap/src/app/standalone-account-provider-runtime.ts b/apps/zcode-cli/packages/bootstrap/src/app/standalone-account-provider-runtime.ts
+index a99e7adb..e8211464 100644
+--- a/apps/zcode-cli/packages/bootstrap/src/app/standalone-account-provider-runtime.ts
++++ b/apps/zcode-cli/packages/bootstrap/src/app/standalone-account-provider-runtime.ts
+@@ -47,7 +47,7 @@ async function readStandaloneCodingPlanCatalog(
+         const access = provider.access;
+         const modelId = provider.builtinModelIds?.find((candidate) => candidate.trim())?.trim();
+         return access?.type === "zhipu-account" &&
+-          access.mode === "individual-coding-plan" &&
++          (access.mode === "individual-coding-plan" || access.mode === "start-plan") &&
+           access.accountType &&
+           modelId
+           ? [{ family: access.accountType, modelId, providerId }]
+@@ -234,7 +234,7 @@ export function createStandaloneProviderRuntimeHeadersPort(
+       input.abortSignal?.throwIfAborted();
+       const providerId = input.providerId.trim();
+       const access = input.accountAccess;
+-      if (!access || access.mode !== "individual-coding-plan") {
++      if (!access || (access.mode !== "individual-coding-plan" && access.mode !== "start-plan")) {
+         throw new Error(`Standalone Account Provider 请求身份无效: ${providerId}`);
+       }
+       const currentIdentity = (
+@@ -244,6 +244,19 @@ export function createStandaloneProviderRuntimeHeadersPort(
+         throw new Error(`Standalone Account Provider 凭据已经失效: ${providerId}`);
+       const family = access.accountType;
+       if (!family) throw new Error("project_token_account_required");
++      // Start Plan 只依赖共享 ZCode JWT（无独立 PAT）；直接以 JWT 作为请求凭据。
++      if (access.mode === "start-plan") {
++        const jwt = (await credentialStore.load("zcodejwttoken"))?.trim();
++        if (!jwt) {
++          resolver.clear();
++          throw new Error("project_token_login_required");
++        }
++        authSnapshots.set("zcodejwttoken", jwt);
++        return {
++          headersApplied: true,
++          requestAuth: { apiKey: jwt },
++        };
++      }
+       const sourceKey = standaloneAccountAuthSourceCredentialKey(providerId);
+       const source = await credentialStore.load(sourceKey);
+       const oauthKey = oauthCredentialKey(family);
